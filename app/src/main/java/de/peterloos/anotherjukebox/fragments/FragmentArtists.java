@@ -1,14 +1,16 @@
 package de.peterloos.anotherjukebox.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,15 +18,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 import de.peterloos.anotherjukebox.Globals;
 import de.peterloos.anotherjukebox.R;
-import de.peterloos.anotherjukebox.dtos.ArtistDTO;
 
 public class FragmentArtists extends Fragment {
+
+    private ListView listviewArtists;
+    private ArrayAdapter<String> artistsAdapter;
 
     // firebase support
     private FirebaseDatabase database;
@@ -45,43 +47,47 @@ public class FragmentArtists extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         Log.v(Globals.TAG, "FragmentNews::onViewCreated");
-        this.setupView();
-    }
 
-    // private helper methods
-    private void setupView() {
+        // setup controls
+        this.listviewArtists = (ListView) view.findViewById(R.id.listviewArtists);
+
+        // connect list view with adapter
+        ArrayList<String> empty = new ArrayList<String>();
+        Context context = this.getContext();
+        this.artistsAdapter =
+                new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, empty);
+        this.listviewArtists.setAdapter(this.artistsAdapter);
 
         // setup firebase
         this.database = FirebaseDatabase.getInstance();
         this.reference = this.database.getReference(Globals.DATABASE_REF_ARTISTS);
-        this.reference.addValueEventListener(artistslistener);
-        // this.reference.addListenerForSingleValueEvent(artistslistener);
-    }
+        this.reference.addValueEventListener(new ValueEventListener() {
 
-    ValueEventListener artistslistener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
-            Log.v(Globals.TAG, "jaaaaaaaaaaaaaaaaaaaaaaaaaa " + dataSnapshot.getChildrenCount());
+                FragmentArtists.this.artistsAdapter.clear();
 
-            for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
-                String sKey = (String) snapshot.getKey();
-                Log.v(Globals.TAG, sKey);
+//                    String sKey = snapshot.getKey();
+//                    Log.v(Globals.TAG, sKey);
 
-                // GEHT !!!!
-                String s = (String) snapshot.child("Name").getValue();
-                Log.v(Globals.TAG, s);
+                    String s = (String) snapshot.child("Name").getValue();
+                    Log.v(Globals.TAG, s);
+
+                    FragmentArtists.this.artistsAdapter.add(s);
+                }
+
+                FragmentArtists.this.artistsAdapter.notifyDataSetChanged();
             }
-        }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // getting list of artists failed, log a message
+                Log.w(Globals.TAG, "load of artists list", databaseError.toException());
 
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-            // getting list of artists failed, log a message
-            Log.w(Globals.TAG, "load of artists list", databaseError.toException());
-
-        }
-    };
+            }
+        });
+    }
 }
