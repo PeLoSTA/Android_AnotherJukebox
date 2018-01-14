@@ -15,13 +15,12 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
 
+import de.peterloos.anotherjukebox.Globals;
 import de.peterloos.anotherjukebox.R;
 
 public class MainActivity extends AppCompatActivity implements MediaPlayer.OnPreparedListener {
 
     private MediaPlayer mMediaplayer;
-
-    private String downloadUrl = "https://firebasestorage.googleapis.com/v0/b/anotherjukebox-18aad.appspot.com/o/music%2FTrust_Me.mp3?alt=media&token=3be14b2c-a57e-4800-81f6-a85297c18867";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnPre
     private void fetchAudioUrlFromFirebase() {
         final FirebaseStorage storage = FirebaseStorage.getInstance();
         // Create a storage reference from our app
-        StorageReference storageRef = storage.getReferenceFromUrl(downloadUrl);
+        StorageReference storageRef = storage.getReferenceFromUrl(Globals.downloadUrl);
         storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {

@@ -7,7 +7,7 @@
     <string name="pause">||</string>
 
     <string name="start">Start</string>
-    <string name="title_activity_jukebox_main">Another Jukebox ain</string>
+    <string name="title_activity_jukebox_main">Another Jukebox</string>
 
     <!-- menu items -->
     <string name="app_settings">Settings</string>

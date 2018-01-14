@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AnotherJukebox.iml" filepath="$PROJECT_DIR$/AnotherJukebox.iml" />
+      <module fileurl="file://D:\GitRepository_peterloos\Android\AnotherJukebox\AnotherJukebox.iml" filepath="D:\GitRepository_peterloos\Android\AnotherJukebox\AnotherJukebox.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://D:\GitRepository_peterloos\Android\AnotherJukebox\app\app.iml" filepath="D:\GitRepository_peterloos\Android\AnotherJukebox\app\app.iml" />
     </modules>
   </component>
 </project>
