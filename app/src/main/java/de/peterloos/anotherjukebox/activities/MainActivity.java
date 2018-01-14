@@ -1,4 +1,4 @@
-package de.peterloos.anotherjukebox;
+package de.peterloos.anotherjukebox.activities;
 
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -14,6 +14,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
+
+import de.peterloos.anotherjukebox.R;
 
 public class MainActivity extends AppCompatActivity implements MediaPlayer.OnPreparedListener {
 

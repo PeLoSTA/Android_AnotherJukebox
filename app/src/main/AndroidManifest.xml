@@ -9,9 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activities.MainActivity"></activity>
+        <activity android:name=".activities.MediaPlayerActivity">
         </activity>
-        <activity android:name=".MediaPlayerActivity">
+        <activity
+            android:name=".activities.JukeboxMainActivity"
+            android:label="@string/title_activity_jukebox_main"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

@@ -1,4 +1,4 @@
-package de.peterloos.anotherjukebox;
+package de.peterloos.anotherjukebox.activities;
 
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.method.Touch;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +22,8 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
+
+import de.peterloos.anotherjukebox.R;
 
 // https://www.tutorialspoint.com/android/android_mediaplayer.htm
 

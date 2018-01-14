@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="de.peterloos.anotherjukebox.activities.JukeboxMainActivity">
+
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/app_settings"
+        app:showAsAction="never"
+        android:visible="true" />
+
+    <item
+        android:id="@+id/action_info"
+        android:orderInCategory="90"
+        android:title="@string/app_info_title"
+        app:showAsAction="never"
+        android:visible="true"/>
+
+    <item
+        android:id="@+id/action_copyright"
+        android:orderInCategory="91"
+        android:title="@string/app_copyright_title"
+        app:showAsAction="never"
+        android:visible="true"/>
+</menu>
