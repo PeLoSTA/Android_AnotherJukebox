@@ -48,7 +48,7 @@ public class FragmentArtists extends Fragment {
         Log.v(Globals.TAG, "FragmentNews::onViewCreated");
 
         // setup controls
-        this.listviewArtists = (ListView) view.findViewById(R.id.listviewArtists);
+        this.listviewArtists = view.findViewById(R.id.listviewArtists);
 
         // connect list view with adapter
         ArrayList<String> empty = new ArrayList<String>();
