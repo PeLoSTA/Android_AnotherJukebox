@@ -25,19 +25,19 @@ public class JukeboxMainActivity extends AppCompatActivity {
 
         Log.d(Globals.TAG, "JukeboxMainActivity::onCreate");
 
-        Toolbar toolbar = (Toolbar) this.findViewById(R.id.main_toolbar);
+        Toolbar toolbar = this.findViewById(R.id.main_toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.showOverflowMenu();
         this.setSupportActionBar(toolbar);
 
         // set adapter of view pager
-        ViewPager viewPager = (ViewPager) this.findViewById(R.id.main_viewpager);
+        ViewPager viewPager = this.findViewById(R.id.main_viewpager);
         FragmentManager fragmentManager = this.getSupportFragmentManager();
         FragmentsPagerAdapter adapter = new FragmentsPagerAdapter(fragmentManager, this);
         viewPager.setAdapter(adapter);
 
         // connect TabLayout and ViewPager
-        TabLayout tabLayout = (TabLayout) this.findViewById(R.id.main_tablayout);
+        TabLayout tabLayout = this.findViewById(R.id.main_tablayout);
         tabLayout.setupWithViewPager(viewPager);
 
 

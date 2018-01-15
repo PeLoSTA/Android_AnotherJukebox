@@ -11,6 +11,7 @@ import de.peterloos.anotherjukebox.Globals;
 import de.peterloos.anotherjukebox.R;
 import de.peterloos.anotherjukebox.fragments.FragmentAlbums;
 import de.peterloos.anotherjukebox.fragments.FragmentArtists;
+import de.peterloos.anotherjukebox.fragments.FragmentPlayer;
 
 /**
  * Created by loospete on 14.01.2018.
@@ -49,7 +50,7 @@ public class FragmentsPagerAdapter extends FragmentStatePagerAdapter {
             case 1:
                 return new FragmentAlbums();
             case 2:
-                return new FragmentAlbums();
+                return new FragmentPlayer();
 
             default:
                 return null;

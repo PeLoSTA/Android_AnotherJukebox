@@ -1,6 +1,5 @@
 package de.peterloos.anotherjukebox.fragments;
 
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -38,7 +37,7 @@ public class FragmentArtists extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        // inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_fragment_artists, container, false);
     }
 
@@ -70,12 +69,7 @@ public class FragmentArtists extends Fragment {
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
-//                    String sKey = snapshot.getKey();
-//                    Log.v(Globals.TAG, sKey);
-
                     String s = (String) snapshot.child("Name").getValue();
-                    Log.v(Globals.TAG, s);
-
                     FragmentArtists.this.artistsAdapter.add(s);
                 }
 
@@ -86,7 +80,6 @@ public class FragmentArtists extends Fragment {
             public void onCancelled(DatabaseError databaseError) {
                 // getting list of artists failed, log a message
                 Log.w(Globals.TAG, "load of artists list", databaseError.toException());
-
             }
         });
     }
