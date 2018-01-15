@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -21,17 +23,24 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import de.peterloos.anotherjukebox.R;
-import de.peterloos.anotherjukebox.activities.MediaPlayerActivity;
 
 public class FragmentPlayer extends Fragment implements View.OnClickListener {
 
     private MediaPlayer mediaPlayer;
     private Context context;
-    private Button buttonStart;
 
     private String downloadUrl = "https://firebasestorage.googleapis.com/v0/b/anotherjukebox-18aad.appspot.com/o/music%2FTrust_Me.mp3?alt=media&token=3be14b2c-a57e-4800-81f6-a85297c18867";
+
+    private Button b1, b2, b3, b4;
+    private TextView tx1, tx2, tx3;
+    private SeekBar seekbar;
+
+    private double startTime = 0;
+    private double finalTime = 0;
 
     public FragmentPlayer() {
         // required empty public constructor
@@ -48,19 +57,94 @@ public class FragmentPlayer extends Fragment implements View.OnClickListener {
 
         this.context = this.getContext();
 
-//        this.buttonStart = view.findViewById(R.id.buttonStart);
-//        this.buttonStart.setOnClickListener(this);
+        // retrieve references of controls
+        this.b1 = view.findViewById(R.id.button1);
+        this.b2 = view.findViewById(R.id.button2);
+        this.b3 = view.findViewById(R.id.button3);
+        this.b4 = view.findViewById(R.id.button4);
+
+        this.tx1 = view.findViewById(R.id.textView2);
+        this.tx2 = view.findViewById(R.id.textView3);
+        this.tx3 = view.findViewById(R.id.textView4);
+
+        this.seekbar = view.findViewById(R.id.seekBar);
+        this.seekbar.setClickable(false);
+
+        // connect controls with event handler
+        this.b1.setOnClickListener (this);
+        this.b2.setOnClickListener (this);
+        this.b3.setOnClickListener (this);
+        this.b4.setOnClickListener (this);
 
         this.mediaPlayer = new MediaPlayer();
         this.mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+
         this.fetchAudioUrlFromFirebase();
     }
 
-    @Override
-    public void onClick(View v) {
+//    // legacy ... zum Ersten Testen !!!
+//    @Override
+//    public void onClick(View v) {
+//
+//        Toast.makeText(this.context, "Started ...", Toast.LENGTH_SHORT).show();
+//        this.mediaPlayer.start();
+//    }
 
-        Toast.makeText(this.context, "Started ...", Toast.LENGTH_SHORT).show();
-        this.mediaPlayer.start();
+
+    @Override
+    public void onClick(View view) {
+
+        if (view == this.b1) {
+            Toast.makeText(this.context, "Button 1", Toast.LENGTH_SHORT).show();
+        }
+        else if (view == this.b2) {
+
+            Toast.makeText(this.context, "Button 2 - Pausing sound", Toast.LENGTH_SHORT).show();
+            this.mediaPlayer.pause();
+            this.b2.setEnabled(false);
+            this.b3.setEnabled(true);
+
+        }
+        else if (view == this.b3) {
+            Toast.makeText(this.context, "Button 3 - Playing sound", Toast.LENGTH_SHORT).show();
+
+            this.mediaPlayer.start();
+
+            finalTime = this.mediaPlayer.getDuration();
+            startTime = this.mediaPlayer.getCurrentPosition();
+
+            // ??????????????????????
+//            if (oneTimeOnly == 0) {
+//                seekbar.setMax((int) finalTime);
+//                oneTimeOnly = 1;
+//            }
+
+            this.tx2.setText(String.format(Locale.getDefault(),"%d min, %d sec",
+                    TimeUnit.MILLISECONDS.toMinutes((long) finalTime),
+                    TimeUnit.MILLISECONDS.toSeconds((long) finalTime) -
+                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
+                                    finalTime)))
+            );
+
+            this.tx1.setText(String.format(Locale.getDefault(),"%d min, %d sec",
+                    TimeUnit.MILLISECONDS.toMinutes((long) startTime),
+                    TimeUnit.MILLISECONDS.toSeconds((long) startTime) -
+                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
+                                    startTime)))
+            );
+
+            this.seekbar.setProgress((int) startTime);
+
+
+            // myHandler.postDelayed(UpdateSongTime, 100);
+
+            this.b2.setEnabled(true);
+            this.b3.setEnabled(false);
+        }
+        else if (view == this.b4) {
+            Toast.makeText(this.context, "Button 4", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private void fetchAudioUrlFromFirebase() {
@@ -71,7 +155,7 @@ public class FragmentPlayer extends Fragment implements View.OnClickListener {
             @Override
             public void onSuccess(Uri uri) {
                 try {
-                    // Download url of file
+                    // download url of file
                     final String url = uri.toString();
                     mediaPlayer.setDataSource(url);
 
