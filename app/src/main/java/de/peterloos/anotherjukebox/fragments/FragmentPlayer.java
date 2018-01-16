@@ -26,14 +26,13 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import de.peterloos.anotherjukebox.Globals;
 import de.peterloos.anotherjukebox.R;
+import de.peterloos.anotherjukebox.utils.MediaPlayerHolder;
 
 public class FragmentPlayer extends Fragment implements View.OnClickListener {
 
-    private MediaPlayer mediaPlayer;
     private Context context;
-
-    private String downloadUrl = "https://firebasestorage.googleapis.com/v0/b/anotherjukebox-18aad.appspot.com/o/music%2FTrust_Me.mp3?alt=media&token=3be14b2c-a57e-4800-81f6-a85297c18867";
 
     private Button b1, b2, b3, b4;
     private TextView tx1, tx2, tx3;
@@ -48,6 +47,9 @@ public class FragmentPlayer extends Fragment implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        Log.v(Globals.TAG, "FragmentPlayer::onCreateView");
+
         // inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_fragment_player, container, false);
     }
@@ -76,20 +78,10 @@ public class FragmentPlayer extends Fragment implements View.OnClickListener {
         this.b3.setOnClickListener (this);
         this.b4.setOnClickListener (this);
 
-        this.mediaPlayer = new MediaPlayer();
-        this.mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-
-        this.fetchAudioUrlFromFirebase();
+        Log.v(Globals.TAG, "FragmentPlayer::onViewCreated");
     }
 
-//    // legacy ... zum Ersten Testen !!!
-//    @Override
-//    public void onClick(View v) {
-//
-//        Toast.makeText(this.context, "Started ...", Toast.LENGTH_SHORT).show();
-//        this.mediaPlayer.start();
-//    }
-
+    boolean isStarted = false;
 
     @Override
     public void onClick(View view) {
@@ -100,7 +92,10 @@ public class FragmentPlayer extends Fragment implements View.OnClickListener {
         else if (view == this.b2) {
 
             Toast.makeText(this.context, "Button 2 - Pausing sound", Toast.LENGTH_SHORT).show();
-            this.mediaPlayer.pause();
+
+            MediaPlayerHolder holder = MediaPlayerHolder.getInstance(this.getContext());
+            holder.pause();
+
             this.b2.setEnabled(false);
             this.b3.setEnabled(true);
 
@@ -108,10 +103,23 @@ public class FragmentPlayer extends Fragment implements View.OnClickListener {
         else if (view == this.b3) {
             Toast.makeText(this.context, "Button 3 - Playing sound", Toast.LENGTH_SHORT).show();
 
-            this.mediaPlayer.start();
+            if (! this.isStarted)
+            {
+                MediaPlayerHolder holder = MediaPlayerHolder.getInstance(this.getContext());
+                holder.fetchDownloadUrlFromFirebase();
 
-            finalTime = this.mediaPlayer.getDuration();
-            startTime = this.mediaPlayer.getCurrentPosition();
+                this.isStarted = true;
+            }
+            else
+            {
+                MediaPlayerHolder holder = MediaPlayerHolder.getInstance(this.getContext());
+                holder.play();
+            }
+
+
+
+//            finalTime = this.mediaPlayer.getDuration();
+//            startTime = this.mediaPlayer.getCurrentPosition();
 
             // ??????????????????????
 //            if (oneTimeOnly == 0) {
@@ -147,38 +155,38 @@ public class FragmentPlayer extends Fragment implements View.OnClickListener {
 
     }
 
-    private void fetchAudioUrlFromFirebase() {
-
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReferenceFromUrl(downloadUrl);
-        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                try {
-                    // download url of file
-                    final String url = uri.toString();
-                    mediaPlayer.setDataSource(url);
-
-                    // wait for media player to be prepared
-                    mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener  () {
-
-                        @Override
-                        public void onPrepared(MediaPlayer mp) {
-                            Toast.makeText(FragmentPlayer.this.context, "Yeah ... things are prepared", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    mediaPlayer.prepareAsync();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.i("TAG", e.getMessage());
-            }
-        });
-
-    }
+//    private void fetchAudioUrlFromFirebase() {
+//
+//        FirebaseStorage storage = FirebaseStorage.getInstance();
+//        StorageReference storageRef = storage.getReferenceFromUrl(downloadUrl);
+//        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//            @Override
+//            public void onSuccess(Uri uri) {
+//                try {
+//                    // download url of file
+//                    final String url = uri.toString();
+//                    mediaPlayer.setDataSource(url);
+//
+//                    // wait for media player to be prepared
+//                    mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener  () {
+//
+//                        @Override
+//                        public void onPrepared(MediaPlayer mp) {
+//                            Toast.makeText(FragmentPlayer.this.context, "Yeah ... things are prepared", Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+//                    mediaPlayer.prepareAsync();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                Log.i("TAG", e.getMessage());
+//            }
+//        });
+//
+//    }
 }

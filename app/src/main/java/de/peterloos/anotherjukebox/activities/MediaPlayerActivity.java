@@ -168,7 +168,7 @@ public class MediaPlayerActivity extends AppCompatActivity implements MediaPlaye
                     final String url = uri.toString();
                     mediaPlayer.setDataSource(url);
 
-                    // wait for media player to get prepare
+                    // wait for media player to get prepared
                     mediaPlayer.setOnPreparedListener(MediaPlayerActivity.this);
                     mediaPlayer.prepareAsync();
                 } catch (IOException e) {
