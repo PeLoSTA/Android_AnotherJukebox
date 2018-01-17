@@ -20,4 +20,8 @@
     <string name="tab_title_songs">Songs</string>
     <string name="tab_title_player">Player</string>
 
+    <!-- strings of 'Albums' fragment -->
+    <string name="frag_albums_all_albums">All Albums</string>
+    <string name="frag_albums_button_get_all_albums">Get all Albums</string>
+
 </resources>

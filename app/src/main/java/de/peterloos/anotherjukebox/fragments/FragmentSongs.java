@@ -1,7 +1,5 @@
 package de.peterloos.anotherjukebox.fragments;
 
-
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -64,7 +62,7 @@ public class FragmentSongs extends Fragment implements AdapterView.OnItemClickLi
         String song = this.songsAdapter.getItem(position);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
-        builder.setTitle("Add to Playlist");
+        builder.setTitle("Add to Playlist ?");
         builder.setItems(
             new CharSequence[] {"Yes", "Cancel"} ,
             (dialog, which) -> {

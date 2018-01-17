@@ -165,34 +165,6 @@ public class FragmentPlayer extends Fragment implements View.OnClickListener {
         Toast.makeText(this.context, "Got a new Song to play from " + artist, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-
-        Log.v(Globals.TAG, "onDetach - FragmentPlayer !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        Log.v(Globals.TAG, "onDestroy - FragmentPlayer !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        Log.v(Globals.TAG, "onResume - FragmentPlayer >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        Log.v(Globals.TAG, "onPause - FragmentPlayer <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-    }
-
     //    private void fetchAudioUrlFromFirebase() {
 //
 //        FirebaseStorage storage = FirebaseStorage.getInstance();

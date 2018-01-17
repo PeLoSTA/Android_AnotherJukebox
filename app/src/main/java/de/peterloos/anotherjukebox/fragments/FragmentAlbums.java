@@ -2,6 +2,7 @@ package de.peterloos.anotherjukebox.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -39,7 +40,7 @@ public class FragmentAlbums extends Fragment implements AdapterView.OnItemClickL
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         // inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_fragment_albums, container, false);
@@ -55,7 +56,7 @@ public class FragmentAlbums extends Fragment implements AdapterView.OnItemClickL
         this.listviewAlbums = view.findViewById(R.id.listviewAlbums);
 
         // connect list view with adapter
-        ArrayList<String> empty = new ArrayList<String>();
+        ArrayList<String> empty = new ArrayList<>();
         Context context = this.getContext();
         this.albumsAdapter =
                 new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, empty);
@@ -70,7 +71,6 @@ public class FragmentAlbums extends Fragment implements AdapterView.OnItemClickL
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 FragmentAlbums.this.albumsAdapter.clear();
-
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
                     String albumName = (String) snapshot.child("Name").getValue();
@@ -79,7 +79,6 @@ public class FragmentAlbums extends Fragment implements AdapterView.OnItemClickL
                     Log.v(Globals.TAG, entry);
                     FragmentAlbums.this.albumsAdapter.add(entry);
                 }
-
                 FragmentAlbums.this.albumsAdapter.notifyDataSetChanged();
             }
 

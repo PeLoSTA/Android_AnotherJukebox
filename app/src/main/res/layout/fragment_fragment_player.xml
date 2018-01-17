@@ -5,8 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:tag="unique_tag_fragment_player"
-    android:id="@+id/id_fragment_player"
     tools:context="de.peterloos.anotherjukebox.fragments.FragmentPlayer">
 
     <TextView

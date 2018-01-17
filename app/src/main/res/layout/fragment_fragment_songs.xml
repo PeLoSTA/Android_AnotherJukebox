@@ -1,13 +1,15 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:tag="unique_tag_fragment_songs"
     tools:context="de.peterloos.anotherjukebox.fragments.FragmentSongs">
 
     <TextView
-        android:id="@+id/textviewTitle"
-        android:text="Songs of Album"
+        android:id="@+id/textviewTitleAlbumsFragment"
+        android:text="@string/frag_albums_all_albums"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"

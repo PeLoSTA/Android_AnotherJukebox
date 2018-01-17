@@ -1,5 +1,8 @@
 package de.peterloos.anotherjukebox.activities;
 
+// AUFHEBEN:
+// viewPager.setCurrentItem(idx);   SO TRAVERSIERT MAN DEN VIEWPAGER PROGRAMMATICALLY
+
 import android.graphics.Color;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -17,10 +20,12 @@ import de.peterloos.anotherjukebox.Globals;
 import de.peterloos.anotherjukebox.R;
 import de.peterloos.anotherjukebox.adapters.FragmentsPagerAdapter;
 import de.peterloos.anotherjukebox.fragments.FragmentAlbums;
+import de.peterloos.anotherjukebox.fragments.FragmentArtists;
 import de.peterloos.anotherjukebox.utils.JukeboxHolder;
 
-public class JukeboxMainActivity extends AppCompatActivity implements FragmentAlbums.OnAlbumsFragmentListener  {
+public class JukeboxMainActivity extends AppCompatActivity implements FragmentAlbums.OnAlbumsFragmentListener, FragmentArtists.OnAlbumsOfArtistListener {
 
+    private ViewPager viewPager;
     private FragmentManager fragmentManager;
 
     @Override
@@ -36,7 +41,7 @@ public class JukeboxMainActivity extends AppCompatActivity implements FragmentAl
         this.setSupportActionBar(toolbar);
 
         // set adapter of view pager
-        ViewPager viewPager = this.findViewById(R.id.main_viewpager);
+        this.viewPager = this.findViewById(R.id.main_viewpager);
         this.fragmentManager = this.getSupportFragmentManager();
         FragmentsPagerAdapter adapter = new FragmentsPagerAdapter(fragmentManager, this);
         viewPager.setAdapter(adapter);
@@ -76,6 +81,7 @@ public class JukeboxMainActivity extends AppCompatActivity implements FragmentAl
         return super.onOptionsItemSelected(item);
     }
 
+    // implementation of interface 'FragmentAlbums.OnAlbumsFragmentListener'
     @Override
     public void setupSongsList(String artist, String album) {
 
@@ -85,26 +91,34 @@ public class JukeboxMainActivity extends AppCompatActivity implements FragmentAl
         JukeboxHolder holder = JukeboxHolder.getInstance(this.getApplicationContext());
         ArrayAdapter<String> songsAdapter = holder.getSongsAdapter();
         songsAdapter.add(artist + " " + album);
-
-
-
-//        // FragmentPlayer f = (FragmentPlayer) this.fragmentManager.findFragmentByTag("unique_tag_fragment_player");
-//        FragmentPlayer f2 = (FragmentPlayer) this.fragmentManager.findFragmentById(R.id.id_fragment_player);
-//
-//        this.referenceOfPlayerFragment.displayReceivedData (artist, album);
     }
 
-//    private FragmentPlayer referenceOfPlayerFragment;
-//
-//    @Override
-//    public void onAttachFragment(Fragment fragment) {
-//        super.onAttachFragment(fragment);
-//
-//        String msg = String.format("JukeboxMainActivity::onAttachFragment ...ARGHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
-//        Log.v(Globals.TAG, msg);
-//
-//        if (fragment.getClass() == FragmentPlayer.class) {
-//            this.referenceOfPlayerFragment = (FragmentPlayer) fragment;
-//        }
-//    }
+    // implementation of interface 'FragmentArtists.OnAlbumsOfArtistListener'
+    @Override
+    public void setupAlbumsOfArtistList(String artist) {
+
+        // test frame
+        JukeboxHolder holder = JukeboxHolder.getInstance(this.getApplicationContext());
+        ArrayAdapter<String> songsAdapter = holder.getSongsAdapter();
+
+        if (artist.equals("Beatles")) {
+
+            songsAdapter.clear();
+            songsAdapter.add("Let it be");
+            songsAdapter.add("White Album");
+            songsAdapter.add("Abbey Road");
+
+            this.viewPager.setCurrentItem(1, true);
+        }
+        else if (artist.equals("Toto")) {
+
+            songsAdapter.clear();
+            songsAdapter.add("II");
+            songsAdapter.add("IV");
+            songsAdapter.add("Seven");
+
+            this.viewPager.setCurrentItem(1, true);
+        }
+
+    }
 }
