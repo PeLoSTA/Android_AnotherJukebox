@@ -38,6 +38,13 @@ public class FragmentArtists extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        Log.v(Globals.TAG, "onResume - FragmentArtists >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.v(Globals.TAG, "FragmentArtists::tag2 = " + this.getTag());
         // inflate the layout for this fragment
@@ -49,7 +56,6 @@ public class FragmentArtists extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         Log.v(Globals.TAG, "FragmentArtists::onViewCreated");
-        Log.v(Globals.TAG, "FragmentArtists::tag = " + this.getTag());
 
         // setup controls
         this.listviewArtists = view.findViewById(R.id.listviewArtists);

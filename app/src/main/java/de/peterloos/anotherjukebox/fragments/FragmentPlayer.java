@@ -1,34 +1,26 @@
 package de.peterloos.anotherjukebox.fragments;
 
 import android.content.Context;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-
-import java.io.IOException;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import de.peterloos.anotherjukebox.Globals;
 import de.peterloos.anotherjukebox.R;
-import de.peterloos.anotherjukebox.utils.MediaPlayerHolder;
+import de.peterloos.anotherjukebox.utils.JukeboxHolder;
 
 public class FragmentPlayer extends Fragment implements View.OnClickListener {
 
@@ -37,6 +29,9 @@ public class FragmentPlayer extends Fragment implements View.OnClickListener {
     private Button b1, b2, b3, b4;
     private TextView tx1, tx2, tx3;
     private SeekBar seekbar;
+
+    private ListView listviewPlaylist;
+    private ArrayAdapter<String> playlistAdapter;
 
     private double startTime = 0;
     private double finalTime = 0;
@@ -49,7 +44,6 @@ public class FragmentPlayer extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         Log.v(Globals.TAG, "FragmentPlayer::onCreateView");
-        Log.v(Globals.TAG, "FragmentPlayer::tag = " + this.getTag());
 
         // inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_fragment_player, container, false);
@@ -58,9 +52,11 @@ public class FragmentPlayer extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
+        Log.v(Globals.TAG, "FragmentPlayer::onViewCreated");
+
         this.context = this.getContext();
 
-        // retrieve references of controls
+        // setup controls
         this.b1 = view.findViewById(R.id.button1);
         this.b2 = view.findViewById(R.id.button2);
         this.b3 = view.findViewById(R.id.button3);
@@ -73,13 +69,20 @@ public class FragmentPlayer extends Fragment implements View.OnClickListener {
         this.seekbar = view.findViewById(R.id.seekBar);
         this.seekbar.setClickable(false);
 
+        this.listviewPlaylist = view.findViewById(R.id.listviewPlaylist);
+
         // connect controls with event handler
         this.b1.setOnClickListener (this);
         this.b2.setOnClickListener (this);
         this.b3.setOnClickListener (this);
         this.b4.setOnClickListener (this);
 
-        Log.v(Globals.TAG, "FragmentPlayer::onViewCreated");
+        Log.v(Globals.TAG, "FragmentArtists::onViewCreated");
+
+        // connect list view with adapter
+        JukeboxHolder holder = JukeboxHolder.getInstance(this.getContext());
+        this.playlistAdapter = holder.getPlaylistAdapter();
+        this.listviewPlaylist.setAdapter(this.playlistAdapter);
     }
 
     boolean isStarted = false;
@@ -94,7 +97,7 @@ public class FragmentPlayer extends Fragment implements View.OnClickListener {
 
             Toast.makeText(this.context, "Button 2 - Pausing sound", Toast.LENGTH_SHORT).show();
 
-            MediaPlayerHolder holder = MediaPlayerHolder.getInstance(this.getContext());
+            JukeboxHolder holder = JukeboxHolder.getInstance(this.getContext());
             holder.pause();
 
             this.b2.setEnabled(false);
@@ -106,14 +109,14 @@ public class FragmentPlayer extends Fragment implements View.OnClickListener {
 
             if (! this.isStarted)
             {
-                MediaPlayerHolder holder = MediaPlayerHolder.getInstance(this.getContext());
+                JukeboxHolder holder = JukeboxHolder.getInstance(this.getContext());
                 holder.fetchDownloadUrlFromFirebase();
 
                 this.isStarted = true;
             }
             else
             {
-                MediaPlayerHolder holder = MediaPlayerHolder.getInstance(this.getContext());
+                JukeboxHolder holder = JukeboxHolder.getInstance(this.getContext());
                 holder.play();
             }
 
@@ -162,7 +165,35 @@ public class FragmentPlayer extends Fragment implements View.OnClickListener {
         Toast.makeText(this.context, "Got a new Song to play from " + artist, Toast.LENGTH_SHORT).show();
     }
 
-//    private void fetchAudioUrlFromFirebase() {
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        Log.v(Globals.TAG, "onDetach - FragmentPlayer !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        Log.v(Globals.TAG, "onDestroy - FragmentPlayer !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Log.v(Globals.TAG, "onResume - FragmentPlayer >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        Log.v(Globals.TAG, "onPause - FragmentPlayer <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+    }
+
+    //    private void fetchAudioUrlFromFirebase() {
 //
 //        FirebaseStorage storage = FirebaseStorage.getInstance();
 //        StorageReference storageRef = storage.getReferenceFromUrl(downloadUrl);

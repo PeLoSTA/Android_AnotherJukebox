@@ -40,6 +40,7 @@ public class FragmentAlbums extends Fragment implements AdapterView.OnItemClickL
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         // inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_fragment_albums, container, false);
     }
@@ -49,7 +50,6 @@ public class FragmentAlbums extends Fragment implements AdapterView.OnItemClickL
         super.onViewCreated(view, savedInstanceState);
 
         Log.v(Globals.TAG, "FragmentAlbums::onViewCreated");
-        Log.v(Globals.TAG, "FragmentAlbums::tag = " + this.getTag());
 
         // setup controls
         this.listviewAlbums = view.findViewById(R.id.listviewAlbums);
@@ -90,17 +90,23 @@ public class FragmentAlbums extends Fragment implements AdapterView.OnItemClickL
             }
         });
 
+        // handle click events on list view
         this.listviewAlbums.setOnItemClickListener(this);
     }
+
+    int counter = 0;
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
         Log.w(Globals.TAG, "FragmentAlbums at position " + position);
 
+        String s = this.albumsAdapter.getItem(position);
+        this.counter ++;
+
         if (this.listener != null) {
 
-            this.listener.onSetupSongsList("Ahhhhhhh", "Ohhhhhhhhhhh");
+            this.listener.setupSongsList(s, "Song " + this.counter);
         }
     }
 
@@ -109,7 +115,7 @@ public class FragmentAlbums extends Fragment implements AdapterView.OnItemClickL
      */
     public interface OnAlbumsFragmentListener {
 
-        void onSetupSongsList(String artist, String album);
+        void setupSongsList(String artist, String album);
     }
 
     @Override
