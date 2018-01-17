@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -22,10 +23,12 @@ import java.util.ArrayList;
 import de.peterloos.anotherjukebox.Globals;
 import de.peterloos.anotherjukebox.R;
 
-public class FragmentAlbums extends Fragment {
+public class FragmentAlbums extends Fragment implements AdapterView.OnItemClickListener {
 
     private ListView listviewAlbums;
     private ArrayAdapter<String> albumsAdapter;
+
+    private OnAlbumsFragmentListener listener;
 
     // firebase support
     private FirebaseDatabase database;
@@ -45,7 +48,8 @@ public class FragmentAlbums extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Log.v(Globals.TAG, "FragmentNews::onViewCreated");
+        Log.v(Globals.TAG, "FragmentAlbums::onViewCreated");
+        Log.v(Globals.TAG, "FragmentAlbums::tag = " + this.getTag());
 
         // setup controls
         this.listviewAlbums = view.findViewById(R.id.listviewAlbums);
@@ -85,5 +89,44 @@ public class FragmentAlbums extends Fragment {
                 Log.w(Globals.TAG, "load of albums list", databaseError.toException());
             }
         });
+
+        this.listviewAlbums.setOnItemClickListener(this);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        Log.w(Globals.TAG, "FragmentAlbums at position " + position);
+
+        if (this.listener != null) {
+
+            this.listener.onSetupSongsList("Ahhhhhhh", "Ohhhhhhhhhhh");
+        }
+    }
+
+    /**
+     * define interaction interface between albums and songs fragment
+     */
+    public interface OnAlbumsFragmentListener {
+
+        void onSetupSongsList(String artist, String album);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            this.listener = (OnAlbumsFragmentListener) this.getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Internal Error: Parent activity doesn't implement interface 'OnAlbumsFragmentListener'");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        this.listener = null;
     }
 }

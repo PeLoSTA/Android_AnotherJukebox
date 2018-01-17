@@ -49,6 +49,7 @@ public class FragmentPlayer extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         Log.v(Globals.TAG, "FragmentPlayer::onCreateView");
+        Log.v(Globals.TAG, "FragmentPlayer::tag = " + this.getTag());
 
         // inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_fragment_player, container, false);
@@ -153,6 +154,12 @@ public class FragmentPlayer extends Fragment implements View.OnClickListener {
             Toast.makeText(this.context, "Button 4", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    // callback method for 'inter-fragment' communication
+    public void displayReceivedData(String artist, String album)
+    {
+        Toast.makeText(this.context, "Got a new Song to play from " + artist, Toast.LENGTH_SHORT).show();
     }
 
 //    private void fetchAudioUrlFromFirebase() {

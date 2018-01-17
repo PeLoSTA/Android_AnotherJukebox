@@ -12,6 +12,7 @@ import de.peterloos.anotherjukebox.R;
 import de.peterloos.anotherjukebox.fragments.FragmentAlbums;
 import de.peterloos.anotherjukebox.fragments.FragmentArtists;
 import de.peterloos.anotherjukebox.fragments.FragmentPlayer;
+import de.peterloos.anotherjukebox.fragments.FragmentSongs;
 
 /**
  * Created by loospete on 14.01.2018.
@@ -35,6 +36,7 @@ public class FragmentsPagerAdapter extends FragmentStatePagerAdapter {
         this.tabTitles = new String[]{
                 resources.getString(R.string.tab_title_artists),
                 resources.getString(R.string.tab_title_albums),
+                resources.getString(R.string.tab_title_songs),
                 resources.getString(R.string.tab_title_player)
         };
     }
@@ -44,12 +46,17 @@ public class FragmentsPagerAdapter extends FragmentStatePagerAdapter {
 
         Log.v(Globals.TAG, "FragmentsPagerAdapter ==> " + Integer.toString(position));
 
+        Fragment f;
+
+
         switch (position) {
             case 0:
                 return new FragmentArtists();
             case 1:
                 return new FragmentAlbums();
             case 2:
+                return new FragmentSongs();
+            case 3:
                 return new FragmentPlayer();
 
             default:

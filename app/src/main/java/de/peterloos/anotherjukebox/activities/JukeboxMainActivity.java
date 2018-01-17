@@ -2,6 +2,7 @@ package de.peterloos.anotherjukebox.activities;
 
 import android.graphics.Color;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -12,11 +13,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import javax.microedition.khronos.opengles.GL;
+
 import de.peterloos.anotherjukebox.Globals;
 import de.peterloos.anotherjukebox.R;
 import de.peterloos.anotherjukebox.adapters.FragmentsPagerAdapter;
+import de.peterloos.anotherjukebox.fragments.FragmentAlbums;
+import de.peterloos.anotherjukebox.fragments.FragmentPlayer;
 
-public class JukeboxMainActivity extends AppCompatActivity {
+public class JukeboxMainActivity extends AppCompatActivity implements FragmentAlbums.OnAlbumsFragmentListener  {
+
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +39,7 @@ public class JukeboxMainActivity extends AppCompatActivity {
 
         // set adapter of view pager
         ViewPager viewPager = this.findViewById(R.id.main_viewpager);
-        FragmentManager fragmentManager = this.getSupportFragmentManager();
+        this.fragmentManager = this.getSupportFragmentManager();
         FragmentsPagerAdapter adapter = new FragmentsPagerAdapter(fragmentManager, this);
         viewPager.setAdapter(adapter);
 
@@ -69,5 +76,38 @@ public class JukeboxMainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSetupSongsList(String artist, String album) {
+
+        String msg = String.format("JukeboxMainActivity::Yeahhh ... I've got a song !!! %s %s", artist, album);
+
+        Log.d(Globals.TAG, msg);
+
+        // FragmentPlayer f = (FragmentPlayer) this.fragmentManager.findFragmentByTag("unique_tag_fragment_player");
+        FragmentPlayer f2 = (FragmentPlayer) this.fragmentManager.findFragmentById(R.id.id_fragment_player);
+
+        this.referenceOfPlayerFragment.displayReceivedData (artist, album);
+    }
+
+    private FragmentPlayer referenceOfPlayerFragment;
+
+    @Override
+    public void onAttachFragment(Fragment fragment) {
+        super.onAttachFragment(fragment);
+
+
+
+        String msg = String.format("JukeboxMainActivity::onAttachFragment ...ARGHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+        Log.v(Globals.TAG, msg);
+
+
+
+        if (fragment.getClass() == FragmentPlayer.class) {
+            this.referenceOfPlayerFragment = (FragmentPlayer) fragment;
+        }
+
+
     }
 }

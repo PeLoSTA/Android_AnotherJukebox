@@ -33,10 +33,13 @@ public class FragmentArtists extends Fragment {
 
     public FragmentArtists() {
         // required empty public constructor
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.v(Globals.TAG, "FragmentArtists::tag2 = " + this.getTag());
         // inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_fragment_artists, container, false);
     }
@@ -45,7 +48,8 @@ public class FragmentArtists extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Log.v(Globals.TAG, "FragmentNews::onViewCreated");
+        Log.v(Globals.TAG, "FragmentArtists::onViewCreated");
+        Log.v(Globals.TAG, "FragmentArtists::tag = " + this.getTag());
 
         // setup controls
         this.listviewArtists = view.findViewById(R.id.listviewArtists);
